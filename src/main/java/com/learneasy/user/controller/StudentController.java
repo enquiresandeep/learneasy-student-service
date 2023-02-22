@@ -23,7 +23,7 @@ public class StudentController {
 
     @PostMapping("/")
     public Student saveStudent(@RequestBody Student student) {
-        log.info("StudentService saveStudent "+student.getFirstName());
+        log.info("StudentService saveStudent new logs "+student.getFirstName());
         return _studentService.createStudent(student);
     }
 
@@ -57,9 +57,6 @@ public class StudentController {
         log.info("findAll ");
         return _studentService.findAll();
     }
-
-
-
 
     @PostMapping("/createAddress")
     public Address createAddress(@RequestBody Address address) {
