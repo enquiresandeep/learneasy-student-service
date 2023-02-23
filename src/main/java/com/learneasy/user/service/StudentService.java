@@ -8,6 +8,7 @@ import com.learneasy.user.domain.Address;
 import com.learneasy.user.domain.Student;
 import com.learneasy.user.infrastructure.AddressRepository;
 import com.learneasy.user.infrastructure.StudentRepository;
+import com.learneasy.user.infrastructure.dto.AddressDTO;
 import com.learneasy.user.infrastructure.dto.StudentDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class StudentService implements  IStudentService{
         return studentRepository.findById(studentId).get();
     }
 
-    public Student updateStudent(Student updatedStudent) throws JsonMappingException {
+    public Student updateStudent(StudentDTO updatedStudent) throws JsonMappingException {
         Student student = studentRepository.findById(updatedStudent.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + updatedStudent.getStudentId()));
 
@@ -56,13 +57,16 @@ public class StudentService implements  IStudentService{
         return studentRepository.findAll();
     }
 
-    public Address createAddress(Address address) {
-        log.info("StudentService createAddress "+address.getStreet());
-        String studentId = address.getStudentId();
+    public Address createAddress(AddressDTO addressDTO) throws JsonMappingException{
+        log.info("StudentService createAddress "+addressDTO.getStreet());
+        String studentId = addressDTO.getStudentId();
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + studentId));
-        address.setStudentId(address.getStudentId());
-
+        Address address  = new Address();
+        address.setStudentId(addressDTO.getStudentId());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        address = objectMapper.updateValue(address, addressDTO);
         address = addressRepository.save(address);
         return address;
     }
@@ -71,7 +75,7 @@ public class StudentService implements  IStudentService{
         return addressRepository.findByStudentId(studentId);
     }
 
-    public Address updateAddress( Address updatedAddress) throws JsonMappingException {
+    public Address updateAddress( AddressDTO updatedAddress) throws JsonMappingException {
         Address address = addressRepository.findById(updatedAddress.getId())
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + updatedAddress.getId()));
 

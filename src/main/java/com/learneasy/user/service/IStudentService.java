@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learneasy.user.domain.Address;
 import com.learneasy.user.domain.Student;
+import com.learneasy.user.infrastructure.dto.AddressDTO;
 import com.learneasy.user.infrastructure.dto.StudentDTO;
 
 import java.util.List;
@@ -14,12 +15,12 @@ public interface IStudentService {
 
     public Student findStudentByStudentId(String studentId);
 
-    public Student updateStudent(Student updatedStudent) throws JsonMappingException ;
+    public Student updateStudent(StudentDTO updatedStudent) throws JsonMappingException ;
     public List<Student> findAll();
 
-    public Address createAddress(Address address) ;
+    public Address createAddress(AddressDTO address) throws JsonMappingException;
 
     public List<Address> findAddressesByStudentId(String studentId) ;
 
-    public Address updateAddress( Address updatedAddress) throws JsonMappingException ;
+    public Address updateAddress( AddressDTO updatedAddress) throws JsonMappingException ;
 }

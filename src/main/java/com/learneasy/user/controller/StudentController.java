@@ -2,6 +2,7 @@ package com.learneasy.user.controller;
 
 import com.learneasy.user.domain.Address;
 import com.learneasy.user.domain.Student;
+import com.learneasy.user.infrastructure.dto.AddressDTO;
 import com.learneasy.user.infrastructure.dto.StudentDTO;
 import com.learneasy.user.service.IStudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class StudentController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
+    public ResponseEntity<Student> updateStudent(@RequestBody StudentDTO student) {
         try {
             Student updatedStudent = _studentService.updateStudent(student);
             return ResponseEntity.ok(updatedStudent);
@@ -71,13 +72,25 @@ public class StudentController {
     }
 
     @PostMapping("/createAddress")
-    public Address createAddress(@RequestBody Address address) {
+    public ResponseEntity<Address> createAddress(@RequestBody AddressDTO address) {
         log.info("StudentService saveStudent "+address.getStreet());
-        return _studentService.createAddress(address);
+        try {
+            Address updatedAddress = _studentService.createAddress(address);
+            return ResponseEntity.ok(updatedAddress);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            Address errorAddress = new Address();
+            errorAddress.setErrorMessage(e.getMessage());
+            return new ResponseEntity<>(errorAddress, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 
     @PutMapping("/updateAddress")
-    public ResponseEntity<Address> updateAddress(@RequestBody Address address) {
+    public ResponseEntity<Address> updateAddress(@RequestBody AddressDTO address) {
         try {
             Address updatedAddress = _studentService.updateAddress(address);
             return ResponseEntity.ok(updatedAddress);
