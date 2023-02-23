@@ -1,9 +1,9 @@
 package com.learneasy.user.controller;
 
 import com.learneasy.user.domain.Address;
-import com.learneasy.user.domain.ErrorResponse;
 import com.learneasy.user.domain.Student;
-import com.learneasy.user.service.StudentService;
+import com.learneasy.user.infrastructure.dto.StudentDTO;
+import com.learneasy.user.service.IStudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,24 @@ import java.util.NoSuchElementException;
 public class StudentController {
 
     @Autowired
-    private StudentService _studentService;
+    private final IStudentService _studentService;
+
+    public StudentController(IStudentService studentService){
+        this._studentService = studentService;
+    }
+
 
     @PostMapping("/")
-    public Student saveStudent(@RequestBody Student student) {
+    public ResponseEntity<Student> saveStudent(@RequestBody StudentDTO student) {
         log.info("StudentService saveStudent new logs "+student.getFirstName());
-        return _studentService.createStudent(student);
+        try{
+            return ResponseEntity.ok( _studentService.createStudent(student));
+        }catch(Exception e){
+            log.error("StudentService error {}", student.getFirstName());
+            Student errorStudent = new Student();
+            errorStudent.setErrorMessage("Server Error");
+            return new ResponseEntity<>(errorStudent, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/")

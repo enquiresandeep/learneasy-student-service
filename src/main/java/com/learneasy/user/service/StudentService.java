@@ -8,6 +8,7 @@ import com.learneasy.user.domain.Address;
 import com.learneasy.user.domain.Student;
 import com.learneasy.user.infrastructure.AddressRepository;
 import com.learneasy.user.infrastructure.StudentRepository;
+import com.learneasy.user.infrastructure.dto.StudentDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,20 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class StudentService {
+public class StudentService implements  IStudentService{
     @Autowired
     private AddressRepository addressRepository;
 
     @Autowired
      private StudentRepository studentRepository;
 
-    public Student createStudent(Student student) {
-        log.info("StudentService saveStudent "+student.getFirstName());
+    public Student createStudent(StudentDTO studentDTO) throws Exception{
+        log.info("StudentService saveStudent "+studentDTO.getFirstName());
+        Student student = new Student();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        student = objectMapper.updateValue(student, studentDTO);
+
         return studentRepository.save(student);
     }
 
