@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhoneDTO {
+public class PhoneDTO extends  BaseDTO{
     private  String countryCode;
     private  String areaCode;
     private  String phoneNumber;

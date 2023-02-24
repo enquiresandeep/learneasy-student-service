@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO  {
+public class AddressDTO  extends  BaseDTO{
     private String id;
 
     private String street;

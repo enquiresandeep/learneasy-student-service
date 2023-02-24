@@ -11,16 +11,16 @@ import com.learneasy.user.infrastructure.dto.StudentDTO;
 import java.util.List;
 
 public interface IStudentService {
-    public Student createStudent(StudentDTO student) throws Exception;
+    public StudentDTO createStudent(StudentDTO student) throws Exception;
 
-    public Student findStudentByStudentId(String studentId);
+    public StudentDTO findStudentByStudentId(String studentId);
 
-    public Student updateStudent(StudentDTO updatedStudent) throws JsonMappingException ;
-    public List<Student> findAll();
+    public StudentDTO updateStudent(StudentDTO updatedStudent) throws JsonMappingException ;
+    public List<StudentDTO> findAll();
 
-    public Address createAddress(AddressDTO address) throws JsonMappingException;
+    public AddressDTO createAddress(AddressDTO address) throws JsonMappingException;
 
-    public List<Address> findAddressesByStudentId(String studentId) ;
+    public List<AddressDTO> findAddressesByStudentId(String studentId) ;
 
-    public Address updateAddress( AddressDTO updatedAddress) throws JsonMappingException ;
+    public AddressDTO updateAddress( AddressDTO updatedAddress) throws JsonMappingException ;
 }

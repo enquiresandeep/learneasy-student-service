@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentDTO  {
+public class StudentDTO  extends  BaseDTO{
 
     private String studentId;
     private String firstName;
